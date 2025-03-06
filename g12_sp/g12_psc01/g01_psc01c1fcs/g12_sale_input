@@ -1,0 +1,120 @@
+from typing import Optional
+from pathlib import Path
+import re
+
+VALID_REGIONS = {"w": "West", "m": "Mountain", "c": "Central", "e": "East"}
+DATE_FORMAT = "%Y-%m-%d"
+MIN_YEAR, MAX_YEAR = 2000, 2999
+FILEPATH = Path(__file__).parent.parent / 'p01_files'
+NAMING_CONVENTION = "sales_qn_yyyy_r.csv"
+
+sales_list = []
+
+
+def input_amount() -> float:
+    while True:
+        try:
+            entry = float(input(f"{'Amount:':20}"))
+            if entry > 0:
+                return entry
+            print("Amount must be greater than zero.")
+        except ValueError:
+            print("Invalid amount. Please enter a number.")
+
+
+def input_int(entry_item: str, high: int, low: int = 1, fmt_width: int = 20) -> int:
+    prompt = f"{entry_item.capitalize()} ({low}-{high}):"
+    while True:
+        try:
+            entry = int(input(f"{prompt:{fmt_width}}"))
+            if low <= entry <= high:
+                return entry
+            print(f"{entry_item.capitalize()} must be between {low} and {high}.")
+        except ValueError:
+            print("Invalid input. Please enter an integer.")
+
+
+def is_leap_year(year: int) -> bool:
+    return (year % 400 == 0) or (year % 4 == 0 and year % 100 != 0)
+
+
+def cal_max_day(year: int, month: int) -> int:
+    if month in {1, 3, 5, 7, 8, 10, 12}:
+        return 31
+    elif month in {4, 6, 9, 11}:
+        return 30
+    elif month == 2:
+        return 29 if is_leap_year(year) else 28
+    return 0
+
+
+def input_day(year: int, month: int) -> int:
+    max_day = cal_max_day(year, month)
+    return input_int("Day", max_day, 1)
+
+
+def input_region_code() -> Optional[str]:
+    while True:
+        region_code = input("Region ('w', 'm', 'c', 'e'): ").strip().lower()
+        if region_code in VALID_REGIONS:
+            return region_code
+        print(f"Region must be one of the following: {tuple(VALID_REGIONS.keys())}.")
+
+
+def input_date() -> str:
+    year = input_int("Year", MAX_YEAR, MIN_YEAR)
+    month = input_int("Month", 12, 1)
+    day = input_day(year, month)
+    return f"{year}-{month:02d}-{day:02d}"
+
+
+def is_valid_filename_format(filename: str) -> bool:
+    pattern = r"^sales_q\d{1,2}\d{4}[wmce]\.csv$"
+    return bool(re.match(pattern, filename))
+
+def get_region_code(sales_filename: str) -> str:
+    parts = sales_filename.split("_")
+    return parts[-1][0] if len(parts) >= 4 else ""
+
+
+def import_sales():
+    while True:
+        filename = input("Enter name of file to import: ").strip()
+        if not is_valid_filename_format(filename):
+            print("Filename doesn't match expected format.")
+            continue
+
+        region = get_region_code(filename)
+        if region not in VALID_REGIONS:
+            print(f"Filename must contain a valid region code: {list(VALID_REGIONS.keys())}.")
+            continue
+
+        print(f"Importing file: {filename} (Region: {VALID_REGIONS[region]})")
+        return filename
+
+
+def main():
+    print("\nWelcome to the Sales Data Input Program\n")
+
+    amount = input_amount()
+    year = input_int("Year", MAX_YEAR, MIN_YEAR)
+    month = input_int("Month", 12, 1)
+    day = input_day(year, month)
+    region_code = input_region_code()
+    date = input_date()
+
+    leap = is_leap_year(year)
+
+    filename = import_sales()
+
+    print("\nTest Results:")
+    print(f"Amount: {amount}")
+    print(f"Year: {year} {'(Leap Year)' if leap else '(Non-Leap Year)'}")
+    print(f"Month: {month}, Day: {day}")
+    print(f"Region Code: {region_code} - {VALID_REGIONS[region_code]}")
+    print(f"Formatted Date: {date}")
+    print(f"Imported File: {filename}")
+
+
+if __name__ == "__main__":
+    main()
