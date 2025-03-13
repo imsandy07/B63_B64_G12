@@ -56,47 +56,48 @@ def input_region_code() -> Optional[str]:
             return region_code
         print("Invalid region code. Please enter one of: w, m, c, e.")
 
-def from_input1():
-    amount = input_amount()
-    year = input_year()
-    month = input_month()
-    day = input_day(year, month)
-    sales_date = f"{year}-{month:02}-{day:02}"
-    region_code = input_region_code()
-    return {"amount": amount, "sales_date": sales_date, "region": region_code}
-
 def input_date() -> str:
     year = input_year()
     month = input_month()
     day = input_day(year, month)
     return f"{year}-{month:02}-{day:02}"
 
-def from_input2():
-    amount = input_amount()
-    sales_date = input_date()
-    region_code = input_region_code()
-    return {"amount": amount, "sales_date": sales_date, "region": region_code}
-
 def is_valid_filename_format(filename: str) -> bool:
     return bool(re.fullmatch(NAMING_CONVENTION, filename))
 
-def get_region_code(sales_filename: str) -> str:
-    return sales_filename[-5]
+def import_sales() -> str:
+    filename = input("Enter the filename to import sales: ")
+    if is_valid_filename_format(filename):
+        return filename
+    print("Invalid filename format.")
+    return ""
 
-def is_valid_region(region_code: str) -> bool:
-    return region_code in VALID_REGIONS
-
-def get_region_name(region_code: str) -> str:
-    return VALID_REGIONS.get(region_code, "Unknown")
+def view_sales(sales_list: list) -> bool:
+    if not sales_list:
+        print("No sales data available.")
+        return False
+    for sale in sales_list:
+        print(sale)
+    return True
 
 def main():
     sales_list = []
-    sales_data1 = from_input1()
-    sales_data2 = from_input2()
-    sales_list.append(sales_data1)
-    sales_list.append(sales_data2)
-    print("Sales Data 1:", sales_data1)
-    print("Sales Data 2:", sales_data2)
+    amount1 = input_amount()
+    year = input_year()
+    month = input_month()
+    day = input_day(year, month)
+    sales_date = f"{year}-{month:02}-{day:02}"
+    region_code = input_region_code()
+    from_input1 = {"amount": amount1, "sales_date": sales_date, "region": region_code}
+    sales_list.append(from_input1)
+    amount2 = input_amount()
+    sales_date = input_date()
+    from_input2 = {"amount": amount2, "sales_date": sales_date, "region": region_code}
+    sales_list.append(from_input2)
+    filename = import_sales()
+    from_file = {"filename": filename, "region": region_code}
+    print(from_file)
+    view_sales(sales_list)
 
 if __name__ == "__main__":
     main()
