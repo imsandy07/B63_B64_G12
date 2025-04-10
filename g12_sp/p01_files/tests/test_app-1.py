@@ -30,11 +30,15 @@ class TestSalesDataImporter(unittest.TestCase):
         with open(IMPORTED_FILES, "w") as f:
             f.write("")
 
+    def test_raise_exception(self):
+        input_data = "test\nexit\n"
+        stdout, stderr = self.run_app(input_data)
+
+        self.assertIn("Is the file closed yet? No", stdout)
+        self.assertIn("Confirm if the file is closed. Yes", stdout)
+        self.assertIn("<class 'OSError'>", stdout)
 
     def run_app(self, input_data):
-        """
-        Simulates running the console application with user input.
-        """
         entry_point: str = 'g12_main.py'
         print(f"{entry_point=}")
         # Start the process
