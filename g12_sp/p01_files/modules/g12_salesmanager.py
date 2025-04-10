@@ -26,17 +26,33 @@ def view_sales(sales_list: list) -> bool:
     print("\nTOTAL".rjust(40), f"{total:.1f}")
     return True
 
+
+def auto_save_to_region_file(data: dict) -> None:
+    from datetime import datetime
+    year, month, _ = map(int, data["sales_date"].split("-"))
+    quarter = cal_quarter(month)
+    region = data["region"]
+    filename = f"sales_q{quarter}_{year}_{region}.csv"
+    filepath = Path("data") / filename
+
+    with filepath.open("a", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow([data["amount"], data["sales_date"], region])
+
+
 def add_sales1(sales_list: list) -> None:
     data = from_input1()
     if not has_bad_data(data):
         sales_list.append(data)
         print(f"Sales for {data['sales_date']} is added.")
+        auto_save_to_region_file(data)
 
 def add_sales2(sales_list: list) -> None:
     data = from_input2()
     if not has_bad_data(data):
         sales_list.append(data)
         print(f"Sales for {data['sales_date']} is added.")
+        auto_save_to_region_file(data)
 
 def import_sales(sales_list: list) -> None:
     file_name = input("Enter name of file to import: ")
@@ -47,7 +63,7 @@ def import_sales(sales_list: list) -> None:
     file_path = Path("data") / file_name
 
     if already_imported(file_path):
-        print(f"File '{file_name}' has already been imported.")
+        print(f"\nPlease enter a command: import\nEnter name of file to import: {file_name}\nFile '{file_name}' has already been imported.")
         return
 
     new_sales = file_import(file_path)
