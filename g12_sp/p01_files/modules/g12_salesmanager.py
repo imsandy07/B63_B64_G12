@@ -1,7 +1,13 @@
 from g12_salesinput import cal_quarter, get_region_name, has_bad_data, from_input1, from_input2
+from g12_salesfile import is_valid_filename_format, already_imported, import_sales as file_import, add_imported_file
 from pathlib import Path
 import csv
 
+# Ensure the 'data' directory exists
+data_dir = Path("data")
+data_dir.mkdir(parents=True, exist_ok=True)
+
+# Define the sales file path
 SALES_FILE = Path("data/all_sales.csv")
 
 def view_sales(sales_list: list) -> bool:
@@ -33,14 +39,12 @@ def add_sales2(sales_list: list) -> None:
         print(f"Sales for {data['sales_date']} is added.")
 
 def import_sales(sales_list: list) -> None:
-    from g12_salesfile import is_valid_filename_format, already_imported, import_sales as file_import, add_imported_file
-
     file_name = input("Enter name of file to import: ")
     if not is_valid_filename_format(file_name):
         print("Filename doesn't follow the expected format of sales_qn_yyyy_r.csv.")
         return
 
-    file_path = Path("data") / file_name
+    file_path = Path("data") / file_name  # Ensured file path is pointing to data directory
 
     if already_imported(file_path):
         print(f"File '{file_name}' has already been imported.")
@@ -70,6 +74,10 @@ def import_all_sales() -> list:
     return sales_list
 
 def save_all_sales(sales_list: list) -> None:
+    # Ensure 'data' directory exists before trying to save
+    data_dir = Path("data")
+    data_dir.mkdir(parents=True, exist_ok=True)
+
     with SALES_FILE.open(mode="w", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=["amount", "sales_date", "region"])
         writer.writeheader()
