@@ -1,4 +1,8 @@
-from g12_salesmanager import view_sales, add_sales1, add_sales2, import_sales, import_all_sales, save_all_sales
+from g12_salesmanager import (
+    view_sales, add_sales1, add_sales2,
+    import_sales, import_all_sales,
+    save_all_sales, raise_exception  # ✅ include raise_exception
+)
 
 def display_title() -> None:
     print("SALES DATA IMPORTER")
@@ -10,9 +14,10 @@ view   - View all sales
 add1   - Add sales by typing sales, year, month, day, and region
 add2   - Add sales by typing sales, date (YYYY-MM-DD), and region
 import - Import sales from file
+test   - Test exception handling
 menu   - Show menu
 exit   - Exit program
-""")
+""")  # ✅ added 'test' in the menu display
 
 def execute_command() -> None:
     sales_list = import_all_sales()
@@ -29,6 +34,8 @@ def execute_command() -> None:
             add_sales2(sales_list)
         elif command == "import":
             import_sales(sales_list)
+        elif command == "test":
+            raise_exception()  # ✅ handle 'test' command here
         elif command == "menu":
             display_menu()
         elif command == "exit":

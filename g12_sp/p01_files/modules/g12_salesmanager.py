@@ -44,7 +44,7 @@ def import_sales(sales_list: list) -> None:
         print("Filename doesn't follow the expected format of sales_qn_yyyy_r.csv.")
         return
 
-    file_path = Path("data") / file_name  # Ensured file path is pointing to data directory
+    file_path = Path("data") / file_name
 
     if already_imported(file_path):
         print(f"File '{file_name}' has already been imported.")
@@ -74,7 +74,6 @@ def import_all_sales() -> list:
     return sales_list
 
 def save_all_sales(sales_list: list) -> None:
-    # Ensure 'data' directory exists before trying to save
     data_dir = Path("data")
     data_dir.mkdir(parents=True, exist_ok=True)
 
@@ -82,3 +81,16 @@ def save_all_sales(sales_list: list) -> None:
         writer = csv.DictWriter(file, fieldnames=["amount", "sales_date", "region"])
         writer.writeheader()
         writer.writerows(sales_list)
+
+def raise_exception() -> None:
+    try:
+        with open(SALES_FILE, 'w', newline='') as csvfile:
+            print("Is the file closed yet?", "Yes" if csvfile.closed else "No")
+            raise OSError("Simulated OSError")
+    except OSError as e:
+        print("Confirm if the file is closed.", "Yes" if csvfile.closed else "No")
+        print(type(e))
+        raise
+    finally:
+        if not csvfile.closed:
+            csvfile.close()
