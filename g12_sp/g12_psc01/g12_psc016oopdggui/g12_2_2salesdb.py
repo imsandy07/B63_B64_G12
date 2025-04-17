@@ -21,7 +21,7 @@ class SQLiteDBAccess:
     def retrieve_sales_by_date_region(self, sales_date: date, region_code: str) -> Optional[Sales]:
         con = self.__connect()
         cur = con.cursor()
-        query = '''SELECT id, amount, salesDate, region_code FROM Sales WHERE salesDate = ? AND region_code = ?'''
+        query = '''SELECT id, amount, salesDate, region FROM Sales WHERE salesDate = ? AND region = ?'''
         cur.execute(query, (sales_date.isoformat(), region_code))
         row = cur.fetchone()
         con.close()
