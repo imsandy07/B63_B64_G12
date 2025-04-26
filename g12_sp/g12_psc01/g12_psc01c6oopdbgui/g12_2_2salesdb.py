@@ -1,11 +1,10 @@
-# g07_2_2salesdb.py
-from g07_1_1filetypes import FileType
-from g07_1_1salestypes import Sales, Regions, Region
+
+from g12_1_1filetypes import FileType
+from g12_1_1salestypes import Sales, Regions, Region
 from typing import Optional
 from pathlib import Path
 from datetime import date
 import sqlite3
-
 
 class SQLiteDBAccess:
     def __init__(self, db_name: str = '', db_path: Path = None):
@@ -15,7 +14,6 @@ class SQLiteDBAccess:
         self._sqlite_sales_db = FileType(fname, fpath)
 
     def __connect(self) -> sqlite3.Connection:
-        """Connect to the SQLite database and return the connection object."""
         try:
             conn = sqlite3.connect(self._sqlite_sales_db.dirpath / self._sqlite_sales_db.filename)
             conn.row_factory = sqlite3.Row
@@ -25,7 +23,6 @@ class SQLiteDBAccess:
             raise
 
     def retrieve_sales_by_date_region(self, sales_date: date, region_code: str) -> Optional[Sales]:
-        """Retrieve sales record by date and region code."""
         try:
             with self.__connect() as conn:
                 cursor = conn.cursor()
@@ -42,13 +39,12 @@ class SQLiteDBAccess:
                         region=region,
                         id=row['ID'])
                 else:
-                    return None  # Explicitly return None if no row found
+                    return None
         except sqlite3.Error as e:
             print(f"Database error: {e}")
         return None
 
     def update_sales(self, sales: Sales) -> None:
-        """Update sales record in the database."""
         try:
             with self.__connect() as conn:
                 cursor = conn.cursor()
@@ -61,7 +57,6 @@ class SQLiteDBAccess:
             raise
 
     def retrieve_regions(self) -> Optional[Regions]:
-        """Retrieve all regions from the database."""
         try:
             with self.__connect() as conn:
                 cursor = conn.cursor()
@@ -74,7 +69,6 @@ class SQLiteDBAccess:
         except sqlite3.Error as e:
             print(f"Database error: {e}")
         return None
-
 
 def main():
     pass

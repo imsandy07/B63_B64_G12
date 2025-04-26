@@ -1,10 +1,9 @@
-# g07_3_gui_tkinter.py
-from g07_1_1salestypes import Sales
-from g07_2_2salesdb import SQLiteDBAccess
+
+from g12_1_1salestypes import Sales
+from g12_2_2salesdb import SQLiteDBAccess
 from datetime import datetime
 import tkinter as tk
 from tkinter import ttk, messagebox
-
 
 class SalesFrame(ttk.Frame):
     def __init__(self, parent):
@@ -16,14 +15,12 @@ class SalesFrame(ttk.Frame):
     def __init_components(self):
         self.pack(fill=tk.BOTH, expand=True)
 
-        # Labels
         ttk.Label(self, text="Enter date and region to get sales amount").grid(row=0, column=0, columnspan=3, pady=5)
         ttk.Label(self, text="Date:").grid(row=1, column=0, sticky=tk.E, padx=5, pady=5)
         ttk.Label(self, text="Region:").grid(row=2, column=0, sticky=tk.E, padx=5, pady=5)
         ttk.Label(self, text="Amount:").grid(row=3, column=0, sticky=tk.E, padx=5, pady=5)
         ttk.Label(self, text="ID:").grid(row=4, column=0, sticky=tk.E, padx=5, pady=5)
 
-        # Entry fields
         self.date_entry = ttk.Entry(self)
         self.region_entry = ttk.Entry(self)
         self.amount_entry = ttk.Entry(self, state='readonly')
@@ -34,14 +31,12 @@ class SalesFrame(ttk.Frame):
         self.amount_entry.grid(row=3, column=1, sticky=tk.W, padx=5, pady=5)
         self.id_entry.grid(row=4, column=1, sticky=tk.W, padx=5, pady=5)
 
-        # Buttons
         ttk.Button(self, text="Get Amount", command=self.__get_amount).grid(row=5, column=0, padx=5, pady=5)
         ttk.Button(self, text="Clear Field", command=self.__clear_field).grid(row=5, column=1, padx=5, pady=5)
-        ttk.Button(self, text="Save Changes", command=self.__save_changes, state='disabled').grid(row=5, column=2,
-                                                                                                  padx=5, pady=5)
+        ttk.Button(self, text="Save Changes", command=self.__save_changes, state='disabled').grid(row=5, column=2, padx=5, pady=5)
         ttk.Button(self, text="Exit", command=self.quit).grid(row=6, column=1, pady=10)
 
-        self.save_button = self.children['!button3']  # Reference to Save Changes button
+        self.save_button = self.children['!button3']
 
     def __clear_field(self):
         self.date_entry.delete(0, tk.END)
@@ -59,12 +54,10 @@ class SalesFrame(ttk.Frame):
         date_str = self.date_entry.get()
         region_code = self.region_entry.get().strip().lower()
 
-        # Check if fields are empty
         if not date_str or not region_code:
             messagebox.showerror("Error", "Please enter date and region to get sales amount")
             return False
 
-        # Validate date format
         try:
             sales_date = datetime.strptime(date_str, "%Y-%m-%d").date()
             if not (Sales.MIN_YEAR <= sales_date.year <= Sales.MAX_YEAR):
@@ -74,7 +67,6 @@ class SalesFrame(ttk.Frame):
             messagebox.showerror("Error", f"'{date_str}' is not in a valid date format 'yyyy-mm-dd'")
             return False
 
-        # Validate region code
         regions = self.db_access.retrieve_regions()
         if not regions or not regions.is_valid_region_code(region_code):
             messagebox.showerror("Error", f"'{region_code}' is not a valid region code")
@@ -121,13 +113,11 @@ class SalesFrame(ttk.Frame):
         except ValueError:
             messagebox.showerror("Error", "Please enter a valid amount")
 
-
 def main():
     root = tk.Tk()
     root.title("Edit Sales Amount")
     SalesFrame(root)
     root.mainloop()
-
 
 if __name__ == "__main__":
     main()
