@@ -1,4 +1,4 @@
-from g07_2_salesmanager import view_sales, add_sales1, add_sales2, import_sales, import_all_sales, save_all_sales
+from g12_2_salesmanager import view_sales, add_sales1, add_sales2, import_sales, import_all_sales, save_all_sales
 
 def display_title() -> None:
     print("SALES DATA IMPORTER")
@@ -37,4 +37,4 @@ def execute_command() -> None:
             break
         else:
             print("    Invalid command. Please try again.")
-            display_menu()  # Assuming you have a function to show the command menu
+            display_menu()

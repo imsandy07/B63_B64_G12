@@ -1,10 +1,9 @@
 from pathlib import Path
 import csv
 import re
-import g07_2_salesmanager
+import g12_2_salesmanager
 
 IMPORTED_FILE = Path(__file__).parent.parent.parent / 'psc01_files' / 'imported_files.txt'
-
 
 REGIONS = ('w', 'm', 'c', 'e')
 
