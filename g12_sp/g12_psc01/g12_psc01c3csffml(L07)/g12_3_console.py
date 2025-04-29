@@ -1,0 +1,3 @@
+from g12_2_salesmanager import view_sales, add_sales1, add_sales2, import_sales, import_all_sales, save_all_sales
+...
+            display_menu()
