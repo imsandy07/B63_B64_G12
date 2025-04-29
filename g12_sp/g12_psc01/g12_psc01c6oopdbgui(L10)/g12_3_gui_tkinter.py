@@ -35,7 +35,7 @@ class SalesFrame(ttk.Frame):
         self.region_entry.grid(row=2, column=1, sticky="ew", pady=5)
 
         ttk.Label(self, text="Amount:").grid(row=3, column=0, sticky="e", pady=5)
-        self.amount_entry = ttk.Entry(self, state='readonly')
+        self.amount_entry = ttk.Entry(self)  # ✅ Made editable
         self.amount_entry.grid(row=3, column=1, sticky="ew", pady=5)
 
         ttk.Label(self, text="ID:").grid(row=4, column=0, sticky="e", pady=5)
@@ -82,9 +82,7 @@ class SalesFrame(ttk.Frame):
     def __clear_field(self):
         self.date_entry.delete(0, tk.END)
         self.region_entry.delete(0, tk.END)
-        self.amount_entry.config(state='normal')
         self.amount_entry.delete(0, tk.END)
-        self.amount_entry.config(state='readonly')
         self.id_entry.config(state='normal')
         self.id_entry.delete(0, tk.END)
         self.id_entry.config(state='readonly')
@@ -129,10 +127,8 @@ class SalesFrame(ttk.Frame):
             return
 
         self.current_sales = sales
-        self.amount_entry.config(state='normal')
         self.amount_entry.delete(0, tk.END)
         self.amount_entry.insert(0, str(sales['amount']))
-        self.amount_entry.config(state='readonly')
 
         self.id_entry.config(state='normal')
         self.id_entry.delete(0, tk.END)
@@ -146,9 +142,7 @@ class SalesFrame(ttk.Frame):
             return
 
         try:
-            self.amount_entry.config(state='normal')
             new_amount = float(self.amount_entry.get())
-            self.amount_entry.config(state='readonly')
 
             if new_amount <= 0:
                 self.__popup_error("Invalid Amount", "Amount must be greater than 0.")

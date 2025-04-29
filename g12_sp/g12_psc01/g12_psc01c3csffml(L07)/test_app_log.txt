@@ -1,1 +1,40 @@
-Test log initialized.
+
+~~~~~~~~~~ GROUP 12 REPORT ~~~~~~~~~~
+test_add1_command (__main__.TestSalesDataImporter.test_add1_command)
+Test the 'add1' command for adding sales with detailed input validation. ... ok
+test_add2_command (__main__.TestSalesDataImporter.test_add2_command)
+Test the 'add2' command for adding sales with detailed input validation. ... ok
+test_exit_command (__main__.TestSalesDataImporter.test_exit_command)
+Test the 'exit' command to terminate the application. ... ok
+test_import_command (__main__.TestSalesDataImporter.test_import_command)
+Test the 'import' command with valid and invalid filenames. ... FAIL
+test_invalid_menu_command (__main__.TestSalesDataImporter.test_invalid_menu_command)
+Test an invalid command to redisplay the menu. ... ok
+test_menu_command (__main__.TestSalesDataImporter.test_menu_command)
+Test the 'menu' command to redisplay the menu. ... ok
+test_view_command (__main__.TestSalesDataImporter.test_view_command)
+Test the 'view' command to display sales data. ... FAIL
+
+======================================================================
+FAIL: test_import_command (__main__.TestSalesDataImporter.test_import_command)
+Test the 'import' command with valid and invalid filenames.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\sandy\csci6163_20252_sp\g12_sp\g12_psc01\g12_psc01c3csffml(L07)\test_app_psc01c3csffml.py", line 241, in test_import_command
+    self.assertIn(step, stdout)
+AssertionError: 'Enter name of file to import: ' not found in 'SALES DATA IMPORTER\n\nCOMMAND MENU\nview   - View all sales\nadd1   - Add sales by typing sales, year, month, day, and region\nadd2   - Add sales by typing sales, date (YYYY-MM-DD), and region\nimport - Import sales from file\nmenu   - Show menu\nexit   - Exit program\n\nPlease enter a command: '
+
+======================================================================
+FAIL: test_view_command (__main__.TestSalesDataImporter.test_view_command)
+Test the 'view' command to display sales data.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\sandy\csci6163_20252_sp\g12_sp\g12_psc01\g12_psc01c3csffml(L07)\test_app_psc01c3csffml.py", line 121, in test_view_command
+    self.assertIn(key_expected_output, stdout)  # self.assertEqual(stdout, key_expected_output)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '     Date           Quarter        Region                  Amount\n-----------------------------------------------------------------\n1.' not found in 'SALES DATA IMPORTER\n\nCOMMAND MENU\nview   - View all sales\nadd1   - Add sales by typing sales, year, month, day, and region\nadd2   - Add sales by typing sales, date (YYYY-MM-DD), and region\nimport - Import sales from file\nmenu   - Show menu\nexit   - Exit program\n\nPlease enter a command:       Date        Quarter             Region             Amount\n----------------------------------------------------------------------\n 1. 2021-02-14              1            Central           3,245.00\n 2. 2021-08-14              3               East           3,245.00\n 3. 2021-02-14              1            Central           3,245.00\n 4. 2021-08-14              3               East           3,245.00\n 5. 2021-02-14              1            Central           3,245.00\n 6. 2021-08-14              3               East           3,245.00\n 7. 2021-02-14              1            Central           3,245.00\n 8. 2021-08-14              3               East           3,245.00\n 9. 2021-02-14              1            Central           3,245.00\n10. 2021-08-14              3               East           3,245.00\n----------------------------------------------------------------------\n                                                       TOTAL  32,450.00\nPlease enter a command: Saved sales records.\nBye!\n'
+
+----------------------------------------------------------------------
+Ran 7 tests in 1.024s
+
+FAILED (failures=2)
